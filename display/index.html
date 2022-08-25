@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>The Ego and it's 0wned - Hugging Shark Friend</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+
+  <div class="container fixed-bottom">
+    <div class="row">
+      <div class="col">
+        <h1 class="display-6">Hugging Shark Friend</h1>
+      </div>
+      <div class="col"></div>
+      <div class="col">
+        <h1 class="display-6 text-primary text-opacity-25" id="timestamp"></h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="container position-relative vw-100 vh-100">
+    <div class="position-absolute top-50 start-50 w-100 translate-middle">
+      <h2 class="text-muted">Alpha</h2>
+      <canvas class="w-100" id="my_canvas"></canvas>
+    </div>
+  </div>
+
+  <script src="js/vendor/modernizr-3.12.0.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"></script>
+  
+  <script type="module">
+    import { createEEG, epoch } from "./node_modules/@neurosity/pipes/dist/esm/eeg-pipes.mjs";
+    import { WebglPlot, WebglLine, ColorRGBA } from "./node_modules/webgl-plot/dist/webglplot.esm.js";
+    
+    const canvas = document.getElementById("my_canvas");
+    const devicePixelRatio = window.devicePixelRatio || 1;
+    canvas.width = canvas.clientWidth * devicePixelRatio;
+    canvas.height = canvas.clientHeight * devicePixelRatio;
+
+    const numX = 256;
+    const color = new ColorRGBA(Math.random(), Math.random(), Math.random(), 1);
+    const line = new WebglLine(color, numX);
+    const wglp = new WebglPlot(canvas);
+
+    line.arrangeX();
+    line.scaleY = 0.01;
+    wglp.addLine(line);
+
+    // Only update the WebglPlot when we have set new data on the line
+    let shouldUpdate = false;
+
+    const eeg = createEEG();
+    eeg.pipe(
+      epoch({ duration: numX, interval: 1 }),
+    ).subscribe(e => {
+      console.log(e);
+      for (let i = 0; i < e.data[0].length; i++) {
+        line.setY(i, e.data[0][i]);
+      }
+      document.getElementById("timestamp").innerHTML = e.info.startTime;
+      shouldUpdate = true;
+    });
+
+    const newFrame = () => {
+      if (shouldUpdate) {
+        wglp.update();
+        shouldUpdate = false;
+      }
+      requestAnimationFrame(newFrame);
+    }
+    requestAnimationFrame(newFrame);
+
+  </script>
+
+</body>
+
+</html>
