@@ -12,11 +12,11 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
 
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" href="./favicon.ico" sizes="any">
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icon.png">
 
-    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx">
+    <link href="./css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx">
 
     <meta name="theme-color" content="#fafafa">
   </head>
@@ -45,12 +45,12 @@
       </div>
     </div>
 
-    <script src="js/vendor/modernizr-3.12.0.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"></script>
+    <script src="./js/modernizr-3.12.0.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"></script>
     
     <script type="module">
-      import { createEEG, epoch } from "./node_modules/@neurosity/pipes/dist/esm/eeg-pipes.mjs";
-      import * as echarts from "./node_modules/echarts/dist/echarts.esm.min.js"
+      import { createEEG, epoch } from "./js/eeg-pipes.js";
+      import * as echarts from "./js/echarts.esm.min.js"
 
       // Only update the WebglPlot when we have set new data on the line
       let shouldUpdate = false;
