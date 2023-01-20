@@ -1,0 +1,31 @@
+{
+    "devDependencies": {
+        "@openzeppelin/contracts": "^4.7.3",
+        "eslint": "^8.32.0",
+        "truffle-plugin-stdjsonin": "github:mhrsalehi/truffle-plugin-stdjsonin"
+    },
+    "scripts": {
+        "test": "truffle test",
+        "eslint": "npx eslint migrations/* test/*",
+        "solium": "solium -d contracts",
+        "ethlint": "solhint contracts/*.sol",
+        "mythx": "mythx analyze --solc-path /usr/local/bin/solc contracts/*.sol",
+        "ethnode": "ganache --miner.blockTime 2 --port 9545 --chain.chainId 1337 --chain.networkId 1337 --mnemonic 'test test test test test test test test test test test junk'",
+        "develop": "truffle console --network develop",
+        "serve": "http-server ./app/ --port 7777 --cors",
+        "build-local": "truffle migrate --network develop && cp ./build/contracts/TheEgoAndIts0wned.json ./app/js/",
+        "dashboard-mainnet": "truffle dashboard",
+        "deploy-mainnet": "truffle deploy --network dashboard",
+        "flatten": "truffle run stdjsonin TheEgoAndIts0wned && mv ./*-input.json ./flattened"
+    },
+    "keywords": [
+        "art",
+        "blockchain"
+    ],
+    "author": "Rhea Myers",
+    "description": "Commodified, aestheticized experience. Body art ++ .",
+    "license": "GPL-v3-or-later",
+    "dependencies": {
+        "@truffle/hdwallet-provider": "^2.1.4"
+    }
+}
