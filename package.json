@@ -26,6 +26,7 @@
     "description": "Commodified, aestheticized experience. Body art ++ .",
     "license": "GPL-v3-or-later",
     "dependencies": {
-        "@truffle/hdwallet-provider": "^2.1.4"
+        "@truffle/hdwallet-provider": "^2.1.4",
+        "csv": "^6.2.5"
     }
 }

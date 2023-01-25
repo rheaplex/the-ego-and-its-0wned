@@ -29,7 +29,6 @@
         <h1 class="display-6">Hugging Shark Friend</h1>
       </div>
       <div class="col">
-        <p class="fw-light" style="color: #00f;">Alpha</p>
       </div>
       <div class="col justify-content-end">
         <h1 class="display-6 text-primary text-opacity-25"
@@ -40,41 +39,56 @@
   </div>
 
   <div class="container position-relative vw-100 vh-100">
-    <div class="position-absolute top-50 start-50 w-100 translate-middle">
-      <canvas class="w-100" id="my_canvas"></canvas>
+    <div class="position-absolute top-50 start-50 w-100 h-75 translate-middle">
+      <canvas class="w-100 h-100 d-inline-block" id="my_canvas"></canvas>
     </div>
   </div>
 
   <script src="./js/modernizr-3.12.0.min.js"></script>
   <script src="./js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"></script>
-  
+  <script src="./js/rxjs.js"></script>
   <script type="module">
-    import { createEEG, epoch } from "./js/eeg-pipes.js";
+    const { interval, map } = rxjs;
+    import { epoch } from "./js/eeg-pipes.js";
     import { WebglPlot, WebglLine, ColorRGBA } from "./js/webglplot.esm.js";
-    
+
+    import { data } from "./js/hugging-shark-friend-data.js";
+
     const canvas = document.getElementById("my_canvas");
     const devicePixelRatio = window.devicePixelRatio || 1;
     canvas.width = canvas.clientWidth * devicePixelRatio;
     canvas.height = canvas.clientHeight * devicePixelRatio;
-
-    const numX = 256;
-    const color = new ColorRGBA(Math.random(), Math.random(), Math.random(), 1);
-    const line = new WebglLine(color, numX);
+    
+    const numX = 2048;
+    const numChannels = 8;
     const wglp = new WebglPlot(canvas);
 
-    line.arrangeX();
-    line.scaleY = 0.01;
-    wglp.addLine(line);
-
+    const lines = [];
+    for (let i = 0; i < numChannels; i++) {
+      const color = new ColorRGBA(0.0, Math.random(), Math.random(), 1);
+      const line = new WebglLine(color, numX);
+      line.arrangeX();
+      line.scaleY = 2.0;
+      line.offsetY = - 1.0
+      lines[i] = line;
+      wglp.addLine(line);
+    }
+    
     // Only update the WebglPlot when we have set new data on the line
     let shouldUpdate = false;
 
-    const eeg = createEEG();
+    const eeg = interval(1000 / 250)
+          .pipe(
+            map(interval => data[interval % data.length])
+          );
+    
     eeg.pipe(
-      epoch({ duration: numX, interval: 1 }),
+      epoch({ duration: numX, interval: 1000 / 250 }),
     ).subscribe(e => {
-      for (let i = 0; i < e.data[0].length; i++) {
-        line.setY(i, e.data[0][i]);
+      for (let l = 0; l < numChannels; l++) {
+        for (let i = 0; i < e.data[0].length; i++) {
+          lines[l].setY(i, e.data[l][i]);
+        }
       }
       document.getElementById("timestamp").innerHTML = e.info.startTime;
       shouldUpdate = true;

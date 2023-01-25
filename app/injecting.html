@@ -26,7 +26,7 @@
     <div class="container fixed-bottom">
       <div class="row">
         <div class="col">
-          <h1 class="display-6">Dilating</h1>
+          <h1 class="display-6">Shot (Estrogen)</h1>
         </div>
         <div class="col">
         </div>
@@ -40,7 +40,7 @@
 
     <div class="container position-relative vw-100 vh-100">
       <div class="position-absolute top-50 start-50 translate-middle">
-        <div style="width: 75vmin; height: 75vmin;" id="main"></div>
+        <div style="width: 75vmin; height: 75vmin; transform: scaleY(-1.0);" id="main"></div>
       </div>
     </div>
 
@@ -52,77 +52,79 @@
       import { epoch } from "./js/eeg-pipes.js";
       import * as echarts from "./js/echarts.esm.min.js"
 
-      import { data } from "./js/dilating-data.js";
+      import { data } from "./js/injection-data.js";
 
       const chart = echarts.init(document.getElementById('main'));
+
+
       chart.setOption({
-          series: [
-              {
-                  type: 'pie',
-                  roseType: 'area',
-                  animation: false,
-                  radius: ['25%', '100%'],
-                  center: ['50%', '50%'],
-                  label: {
-                      show: false
-                  },
-                  data: [
-                      {
-                          value: 100
-                      },
-                      {
-                          value: 200,
-                          name: 'B'
-                      },
-                      {
-                          value: 300,
-                          name: 'C'
-                      },
-                      {
-                          value: 400,
-                          name: 'D'
-                      },
-                  ],
-              },
-          ],
-          color: [
-              '#c23531',
-              '#2f4554',
-              '#61a0a8',
-              '#d48265',
-          ],
+        animation: false,
+        grid: { show: false },
+        xAxis: {
+          show: false,
+          data: ['', '', '', '', '', '', ''],
+        },
+        yAxis: {
+          show: false,
+        },
+        color: ['magenta'],
+        series: [
+          {
+            name: 'ouch',
+            type: 'pictorialBar',
+            barCategoryGap: '-200%',
+            //symbol: 'path://M0,10 L10,10 L5,0 L0,10 z',
+            symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
+            itemStyle: {
+              opacity: 1.0
+            },
+            data: [1,2,3,4,5,6,7],
+            z: 10
+          }
+        ]
       });
-      
+
       const eeg = interval(1000 / 250)
             .pipe(
               map(interval => data[interval % data.length])
             );
 
-      const scale = 200;
-
       eeg.pipe(
           epoch({ duration: 1, interval: 1000 / 250 })
       ).subscribe(e => {
           chart.setOption({
-              animation: true,
-              series: [
+             series: [
+              {
+                data: [
                   {
-                      data: [
-                          {
-                            value: Math.abs(e.data[0][0]) * scale
-                          },
-                          {
-                            value: Math.abs(e.data[1][0]) * scale
-                          },
-                          {
-                              value: Math.abs(e.data[2][0]) * scale
-                          },
-                          {
-                              value: Math.abs(e.data[3][0]) * scale
-                          },
-                      ],
+                    value: e.data[0][0]
                   },
-              ]
+                  {
+                    value: e.data[1][0]
+                  },
+                  {
+                    value: e.data[2][0]
+                  },
+                  {
+                    value: e.data[3][0]
+                  },
+                  // nan :-/
+                  /*{
+                    value: e.data[4][0]
+                  },*/
+                  {
+                    value: e.data[5][0]
+                  },
+                  {
+                    value: e.data[6][0]
+                  },
+                  {
+                    value: e.data[7][0]
+                  },
+                  
+                ],
+              },
+            ]
           });
           document.getElementById("timestamp").innerHTML = e.info.startTime;
       });

@@ -26,7 +26,7 @@
     <div class="container fixed-bottom">
       <div class="row">
         <div class="col">
-          <h1 class="display-6">Dilating</h1>
+          <h1 class="display-6">Being Pinched (Ow!)</h1>
         </div>
         <div class="col">
         </div>
@@ -52,38 +52,29 @@
       import { epoch } from "./js/eeg-pipes.js";
       import * as echarts from "./js/echarts.esm.min.js"
 
-      import { data } from "./js/dilating-data.js";
+      import { data } from "./js/pinching-data.js";
 
       const chart = echarts.init(document.getElementById('main'));
       chart.setOption({
+        xAxis: {
+          type: 'value',
+          show: false,
+        },
+        yAxis: {
+          type: 'category',
+          data: ['', '', '', '', ''],
+          show: false,
+        },
           series: [
-              {
-                  type: 'pie',
-                  roseType: 'area',
-                  animation: false,
-                  radius: ['25%', '100%'],
-                  center: ['50%', '50%'],
-                  label: {
-                      show: false
-                  },
-                  data: [
-                      {
-                          value: 100
-                      },
-                      {
-                          value: 200,
-                          name: 'B'
-                      },
-                      {
-                          value: 300,
-                          name: 'C'
-                      },
-                      {
-                          value: 400,
-                          name: 'D'
-                      },
-                  ],
+            {
+              type: 'bar',
+              barCategoryGap: '-0.5%',
+              animation: false,
+              label: {
+                show: false
               },
+              data: [],
+            },
           ],
           color: [
               '#c23531',
@@ -98,7 +89,7 @@
               map(interval => data[interval % data.length])
             );
 
-      const scale = 200;
+      const scale = 1;
 
       eeg.pipe(
           epoch({ duration: 1, interval: 1000 / 250 })
@@ -106,22 +97,34 @@
           chart.setOption({
               animation: true,
               series: [
-                  {
-                      data: [
-                          {
-                            value: Math.abs(e.data[0][0]) * scale
-                          },
-                          {
-                            value: Math.abs(e.data[1][0]) * scale
-                          },
-                          {
-                              value: Math.abs(e.data[2][0]) * scale
-                          },
-                          {
-                              value: Math.abs(e.data[3][0]) * scale
-                          },
-                      ],
-                  },
+                {
+                  data: [
+                    {
+                      value: e.data[0][0] * scale
+                    },
+                    {
+                      value: e.data[1][0] * scale
+                    },
+                    {
+                      value: e.data[2][0] * scale
+                    },
+                    {
+                      value: e.data[3][0] * scale
+                    },
+                    /*{
+                      value: e.data[4][0] * scale
+                    },*/
+                    {
+                      value: e.data[5][0] * scale
+                    },
+                    /*{
+                      value: e.data[6][0] * scale
+                    },
+                    {
+                      value: e.data[7][0] * scale
+                    },*/
+                  ],
+                },
               ]
           });
           document.getElementById("timestamp").innerHTML = e.info.startTime;

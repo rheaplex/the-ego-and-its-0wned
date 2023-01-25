@@ -29,7 +29,6 @@
           <h1 class="display-6">Kissing</h1>
         </div>
         <div class="col">
-          <p class="fw-light" style="color: #f00;">Epsilon</p>
         </div>
         <div class="col justify-content-end">
           <h1 class="display-6 text-primary text-opacity-25"
@@ -47,92 +46,255 @@
 
     <script src="./js/modernizr-3.12.0.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"></script>
-    
+
+    <script src="./js/rxjs.js"></script>
     <script type="module">
-      import { createEEG, epoch } from "./js/eeg-pipes.js";
+      const { interval, map } = rxjs;
+      import { epoch } from "./js/eeg-pipes.js";
       import * as echarts from "./js/echarts.esm.min.js"
 
-      // Only update the WebglPlot when we have set new data on the line
-      let shouldUpdate = false;
+      import { data } from "./js/kissing-data.js";
 
       const chart = echarts.init(document.getElementById('main'));
       chart.setOption({
-          xAxis: {
-              type: 'value',
-              axisLabel: {
-                  show: false
-              },
-              axisLine: {
-                  show: false
-              },
+        animation: true,
+        grid: {show: false},
+        xAxis: [
+          {
+            type: 'category',
+            boundaryGap: false,
+            axisTick: {},
+            axisLabel: {},
+            show: false,
+            data: ['', '', '', '', '', '', '', '']
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            axisTick: {},
+            axisLabel: {},
+            show: false,
+          }
+        ],
+        series: [
+          {
+            name: 'Line 1',
+            type: 'line',
+            stack: 'Total',
+            smooth: true,
+            lineStyle: {
+              width: 0
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'brown'
+                },
+                {
+                  offset: 1,
+                  color: 'white'
+                }
+              ])
+            },
+            data: []
           },
-          yAxis: {
-              type: 'category',
-              axisLabel: {
-                  show: false
-              },
-              axisLine: {
-                  show: false
-              },
+          {
+            name: 'Line 1',
+            type: 'line',
+            stack: 'Total',
+            smooth: true,
+            lineStyle: {
+              width: 0
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'brown'
+                },
+                {
+                  offset: 1,
+                  color: 'white'
+                }
+              ])
+            },
+            data: []
           },
-          series: [
-              {
-                  type: 'bar',
-                  stack: 'Total',
-                  animation: false,
-                  data: [
-                      {
-                          value: 100
-                      },
-                      {
-                          value: 200
-                      },
-                      {
-                          value: 300
-                      },
-                      {
-                          value: 400
-                      },
-                  ],
-              },
-          ],
-          color: [
-              '#c23531',
-              '#2f4554',
-              '#61a0a8',
-              '#d48265',
-          ],
+          {
+            name: 'Line 1',
+            type: 'line',
+            stack: 'Total',
+            smooth: true,
+            lineStyle: {
+              width: 0
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'brown'
+                },
+                {
+                  offset: 1,
+                  color: 'white'
+                }
+              ])
+            },
+            data: []
+          },
+          {
+            name: 'Line 1',
+            type: 'line',
+            stack: 'Total',
+            smooth: true,
+            lineStyle: {
+              width: 0
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'brown'
+                },
+                {
+                  offset: 1,
+                  color: 'white'
+                }
+              ])
+            },
+            data: []
+          },
+          {
+            name: 'Line 1',
+            type: 'line',
+            stack: 'Total',
+            smooth: true,
+            lineStyle: {
+              width: 0
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'brown'
+                },
+                {
+                  offset: 1,
+                  color: 'white'
+                }
+              ])
+            },
+            data: []
+          },
+          {
+            name: 'Line 1',
+            type: 'line',
+            stack: 'Total',
+            smooth: true,
+            lineStyle: {
+              width: 0
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'brown'
+                },
+                {
+                  offset: 1,
+                  color: 'white'
+                }
+              ])
+            },
+            data: []
+          },
+          {
+            name: 'Line 1',
+            type: 'line',
+            stack: 'Total',
+            smooth: true,
+            lineStyle: {
+              width: 0
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'brown'
+                },
+                {
+                  offset: 1,
+                  color: 'white'
+                }
+              ])
+            },
+            data: []
+          },
+          {
+            name: 'Line 1',
+            type: 'line',
+            stack: 'Total',
+            smooth: true,
+            lineStyle: {
+              width: 0
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'brown'
+                },
+                {
+                  offset: 1,
+                  color: 'white'
+                }
+              ])
+            },
+            data: []
+          },
+        ]
       });
 
-      const scale = 1.0;
-
-      const eeg = createEEG();
+      const eeg = interval(1000 / 250)
+            .pipe(
+              map(interval => data[interval % data.length])
+            );
+      
       eeg.pipe(
-          epoch({ duration: 1, interval: 10 }),
+        epoch({ duration: 555, interval: 1000 / 250 }),
       ).subscribe(e => {
-          chart.setOption({
-              animation: true,
-              series: [
-                  {
-                      data: [
-                          {
-                              value: e.data[0][0] * scale
-                          },
-                          {
-                              value: e.data[1][0] * scale
-                          },
-                          {
-                              value: e.data[2][0] * scale
-                          },
-                          {
-                              value: e.data[3][0] * scale
-                          },
-                      ],
-                  },
-              ]
-          });
-          document.getElementById("timestamp").innerHTML = e.info.startTime;
-          shouldUpdate = true;
+        chart.setOption({
+          animation: true,
+          series: [
+            { data: e.data[0] },
+            { data: e.data[1] },
+            { data: e.data[2] },
+            { data: e.data[3] },
+            { data: e.data[4] },
+            { data: e.data[5] },
+            { data: e.data[6] },
+            { data: e.data[7] },
+          ]
+        });
+        document.getElementById("timestamp").innerHTML = e.info.startTime;
       });
 
     </script>
