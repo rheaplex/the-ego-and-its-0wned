@@ -11,10 +11,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 // Ownable affective experiences.
 
 contract TheEgoAndIts0wned is ERC721, ERC721Enumerable, Pausable, Ownable {
-    uint256 public constant NUM_TOKENS = 32;
+    uint256 public constant NUM_TOKENS = 24;
 
     // Initial metadata URI.
-    string private baseUri = "";
+    string private baseUri = "ipfs://QmT28cVjD77XZGfdUe4D56DtfWzf5DtXjJ4uign5DkRtdo/";
 
     constructor() ERC721("The Ego, and It's 0wned", "TEAI0") {
         for (uint256 i = 1; i <= NUM_TOKENS; i++) {

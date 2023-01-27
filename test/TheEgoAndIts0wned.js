@@ -2,7 +2,7 @@
 
 const TheEgoAndIts0wned = artifacts.require("TheEgoAndIts0wned");
 
-const NUM_TOKENS = web3.utils.toBN(32);
+const NUM_TOKENS = web3.utils.toBN(24);
 
 contract("TheEgoAndIts0wned", (accounts) => {
   const owner = accounts[0];
