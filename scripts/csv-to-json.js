@@ -9,7 +9,7 @@ const numColumns = 8;
 // Ignore first 6 seconds.
 
 const srcdir = "./recordings";
-const destdir = "./app/js";
+const destdir = "./app/data";
 
 // https://docs.openbci.com/Cyton/CytonDataFormat/#interpreting-the-eeg-data
 //const gain = 1;
@@ -71,7 +71,7 @@ const processFile = sourcefile => {
       (row.data[7] - minValues[7]) * scales[7],
     ]}));
 
-  return `export const data = ${JSON.stringify(rows)};`;
+  return JSON.stringify(rows);
 };
 
 fs.readdirSync(srcdir).forEach(srcfilename => {
@@ -79,7 +79,7 @@ fs.readdirSync(srcdir).forEach(srcfilename => {
   const data = processFile(srcfilepath);
   const destfilepath = path.join(
     destdir,
-    `${path.basename(srcfilename, ".csv")}-data.js`
+    `${path.basename(srcfilename, ".csv")}.json`
   );
   fs.writeFileSync(destfilepath, data);
 });
