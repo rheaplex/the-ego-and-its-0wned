@@ -23,24 +23,9 @@
 
   <body>
 
-    <div class="container fixed-bottom">
-      <div class="row">
-        <div class="col">
-          <h1 class="display-6">Shot (Estrogen)</h1>
-        </div>
-        <div class="col">
-        </div>
-        <div class="col justify-content-end">
-          <h1 class="display-6 text-primary text-opacity-25"
-              style="width: 13en;"
-              id="timestamp"></h1>
-        </div>
-      </div>
-    </div>
-
     <div class="container position-relative vw-100 vh-100">
       <div class="position-absolute top-50 start-50 translate-middle">
-        <div style="width: 75vmin; height: 75vmin; transform: scaleY(-1.0);" id="main"></div>
+        <div style="width: 100vmin; height: 100vmin; transform: scaleY(-1.0);" id="main"></div>
       </div>
     </div>
 
@@ -52,14 +37,20 @@
       import { epoch } from "./js/eeg-pipes.js";
       import * as echarts from "./js/echarts.esm.min.js"
 
-      import { data } from "./js/injection-data.js";
+      const response = await fetch("./data/injection.json")
+      const data = await response.json();
 
       const chart = echarts.init(document.getElementById('main'));
 
-
       chart.setOption({
+        // No padding
+        grid: {
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0
+        },
         animation: false,
-        grid: { show: false },
         xAxis: {
           show: false,
           data: ['', '', '', '', '', '', ''],
@@ -121,12 +112,10 @@
                   {
                     value: e.data[7][0]
                   },
-                  
                 ],
               },
             ]
           });
-          document.getElementById("timestamp").innerHTML = e.info.startTime;
       });
 
     </script>

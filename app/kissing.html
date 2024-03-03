@@ -23,42 +23,33 @@
 
   <body>
 
-    <div class="container fixed-bottom">
-      <div class="row">
-        <div class="col">
-          <h1 class="display-6">Kissing</h1>
-        </div>
-        <div class="col">
-        </div>
-        <div class="col justify-content-end">
-          <h1 class="display-6 text-primary text-opacity-25"
-              style="width: 13en;"
-              id="timestamp"></h1>
-        </div>
-      </div>
-    </div>
-
     <div class="container position-relative vw-100 vh-100">
       <div class="position-absolute top-50 start-50 translate-middle">
-        <div style="width: 75vmin; height: 75vmin;" id="main"></div>
+        <div style="width: 100vmin; height: 100vmin; transform: scaleY(-1.0);" id="main"></div>
       </div>
     </div>
 
     <script src="./js/modernizr-3.12.0.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"></script>
-
     <script src="./js/rxjs.js"></script>
     <script type="module">
       const { interval, map } = rxjs;
       import { epoch } from "./js/eeg-pipes.js";
       import * as echarts from "./js/echarts.esm.min.js"
 
-      import { data } from "./js/kissing-data.js";
+      const response = await fetch("./data/kissing.json");
+      const data = await response.json();
 
       const chart = echarts.init(document.getElementById('main'));
       chart.setOption({
+        // No padding
+        grid: {
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0
+        },
         animation: true,
-        grid: {show: false},
         xAxis: [
           {
             type: 'category',
@@ -277,7 +268,7 @@
             .pipe(
               map(interval => data[interval % data.length])
             );
-      
+
       eeg.pipe(
         epoch({ duration: 555, interval: 1000 / 250 }),
       ).subscribe(e => {
@@ -294,7 +285,6 @@
             { data: e.data[7] },
           ]
         });
-        document.getElementById("timestamp").innerHTML = e.info.startTime;
       });
 
     </script>

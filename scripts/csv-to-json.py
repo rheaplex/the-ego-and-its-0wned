@@ -11,20 +11,19 @@ from brainflow.data_filter import DataFilter, FilterTypes, AggOperations, NoiseT
 board_id = BoardIds.CYTON_BOARD.value
 
 srcdir = "./recordings"
-destdir = "./app/js"
+destdir = "./app/data"
 
-def saveJS(filename, data):
-    destfilename = os.path.join(destdir, os.path.basename(filename).removesuffix(".csv") + "-data.js")
+def saveJSON(filename, data):
+    destfilename = os.path.join(destdir, os.path.basename(filename).removesuffix(".csv") + ".json")
     with open(destfilename, 'w') as out:
-        print("export const data = [", file=out)
+        print("[", file=out)
         # SKIP FIRST HUNDRED ROWS until values settle
-        for row in data[100:]:
-            print(f"{{timestamp: {row[8]}, data: [{', '.join(['%f' % n for n in row[:8]])}]}},", file=out)
-        print("];", file=out)
+        print(",".join([f"{{\"timestamp\": {row[8]}, \"data\": [{', '.join(['%f' % n for n in row[:8]])}]}}" for row in data[100:]]), file=out)
+        print("]", file=out)
 
 def deexp(value):
     return pd.to_numeric(value.lower())
-        
+
 def processFile(filename):
     # skiprows includes comments.
     # We skip the comments, the column names, and the first sample, which is all zeros.
@@ -44,15 +43,13 @@ def processFile(filename):
         else:
             data[:,channel] = 0
         #print(data[:,channel])
-    
     if False:
         import matplotlib.pyplot as plt
         df = pd.DataFrame(data[100:])
         plt.figure()
         df.plot()
         plt.show()
-        
-    saveJS(filename, data)
+    saveJSON(filename, data)
 
 for srcfilename in os.listdir(srcdir):
     print(srcfilename)

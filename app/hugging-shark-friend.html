@@ -23,26 +23,11 @@
 
 <body>
 
-  <div class="container fixed-bottom">
-    <div class="row">
-      <div class="col">
-        <h1 class="display-6">Hugging Shark Friend</h1>
-      </div>
-      <div class="col">
-      </div>
-      <div class="col justify-content-end">
-        <h1 class="display-6 text-primary text-opacity-25"
-            style="width: 13en;"
-            id="timestamp"></h1>
-      </div>
-    </div>
-  </div>
-
   <div class="container position-relative vw-100 vh-100">
-    <div class="position-absolute top-50 start-50 w-100 h-75 translate-middle">
-      <canvas class="w-100 h-100 d-inline-block" id="my_canvas"></canvas>
+      <div class="position-absolute top-50 start-50 translate-middle">
+        <canvas style="width: 100vmin; height: 100vmin;" class="d-inline-block" id="main"></div>
+      </div>
     </div>
-  </div>
 
   <script src="./js/modernizr-3.12.0.min.js"></script>
   <script src="./js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"></script>
@@ -52,9 +37,10 @@
     import { epoch } from "./js/eeg-pipes.js";
     import { WebglPlot, WebglLine, ColorRGBA } from "./js/webglplot.esm.js";
 
-    import { data } from "./js/hugging-shark-friend-data.js";
+    const response = await fetch("./data/hugging-shark-friend.json");
+    const data = await response.json();
 
-    const canvas = document.getElementById("my_canvas");
+    const canvas = document.getElementById("main");
     const devicePixelRatio = window.devicePixelRatio || 1;
     canvas.width = canvas.clientWidth * devicePixelRatio;
     canvas.height = canvas.clientHeight * devicePixelRatio;
@@ -90,7 +76,6 @@
           lines[l].setY(i, e.data[l][i]);
         }
       }
-      document.getElementById("timestamp").innerHTML = e.info.startTime;
       shouldUpdate = true;
     });
 
